@@ -10,7 +10,7 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/ride4Low/contracts/events"
 	"github.com/ride4Low/contracts/pkg/rabbitmq"
-	"github.com/sithu-go/ride-share/driver-service/internal/application/service"
+	"github.com/ride4Low/driver-service/internal/application/service"
 )
 
 type EventHandler struct {

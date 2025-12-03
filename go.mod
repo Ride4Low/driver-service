@@ -1,4 +1,4 @@
-module github.com/sithu-go/ride-share/driver-service
+module github.com/ride4Low/driver-service
 
 go 1.25.3
 

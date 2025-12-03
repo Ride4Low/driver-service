@@ -9,8 +9,8 @@ import (
 
 	"github.com/ride4Low/contracts/env"
 	pb "github.com/ride4Low/contracts/proto/driver"
-	"github.com/sithu-go/ride-share/driver-service/internal/config"
-	grpcServer "github.com/sithu-go/ride-share/driver-service/internal/interface/grpc"
+	"github.com/ride4Low/driver-service/internal/config"
+	grpcServer "github.com/ride4Low/driver-service/internal/interface/grpc"
 
 	"google.golang.org/grpc"
 )

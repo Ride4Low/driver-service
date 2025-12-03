@@ -3,7 +3,7 @@ package config
 import (
 	"context"
 
-	"github.com/sithu-go/ride-share/driver-service/internal/interface/grpc/handler"
+	"github.com/ride4Low/driver-service/internal/interface/grpc/handler"
 )
 
 // Container holds all dependencies

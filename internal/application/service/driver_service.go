@@ -6,7 +6,7 @@ import (
 
 	"github.com/mmcloughlin/geohash"
 	pb "github.com/ride4Low/contracts/proto/driver"
-	"github.com/sithu-go/ride-share/driver-service/internal/domain/repository"
+	"github.com/ride4Low/driver-service/internal/domain/repository"
 )
 
 type DriverService interface {
