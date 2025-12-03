@@ -10,7 +10,7 @@ import (
 )
 
 type DriverService interface {
-	RegisterDriver(ctx context.Context, driverId string, packageSlug string) error
+	RegisterDriver(ctx context.Context, driverId string, packageSlug string) (*pb.Driver, error)
 	UnregisterDriver(ctx context.Context, driverId string) error
 	FindAvailableDrivers(ctx context.Context, packageSlug string) ([]string, error)
 }
@@ -25,7 +25,7 @@ func NewDriverService(driverRepo repository.DriverRepository) DriverService {
 	}
 }
 
-func (s *driverService) RegisterDriver(ctx context.Context, driverId string, packageSlug string) error {
+func (s *driverService) RegisterDriver(ctx context.Context, driverId string, packageSlug string) (*pb.Driver, error) {
 	randomIndex := math.IntN(len(PredefinedRoutes))
 	randomRoute := PredefinedRoutes[randomIndex]
 
@@ -52,5 +52,5 @@ func (s *driverService) UnregisterDriver(ctx context.Context, driverId string) e
 }
 
 func (s *driverService) FindAvailableDrivers(ctx context.Context, packageSlug string) ([]string, error) {
-	return s.driverRepo.GetIDByPackageSlug(ctx, packageSlug)
+	return s.driverRepo.GetIDsByPackageSlug(ctx, packageSlug)
 }

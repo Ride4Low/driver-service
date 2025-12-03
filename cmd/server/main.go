@@ -7,7 +7,6 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/ride4Low/contracts/env"
 	pb "github.com/ride4Low/contracts/proto/driver"
 	"github.com/ride4Low/driver-service/internal/config"
 	grpcServer "github.com/ride4Low/driver-service/internal/interface/grpc"
@@ -16,7 +15,7 @@ import (
 )
 
 var (
-	grpcAddr = env.GetInt("GRPC_ADDR", 9092)
+	grpcAddr = 9092
 )
 
 func main() {

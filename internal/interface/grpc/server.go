@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 
+	"github.com/ride4Low/contracts/env"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -35,8 +36,10 @@ func (s *Server) Start() error {
 		return fmt.Errorf("failed to listen: %w", err)
 	}
 
-	// Register reflection service for development
-	reflection.Register(s.server)
+	if env.GetString("APP_ENV", "development") == "development" {
+		// Register reflection service for development
+		reflection.Register(s.server)
+	}
 
 	log.Printf("gRPC server listening on port %d", s.port)
 

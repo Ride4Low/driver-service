@@ -7,7 +7,7 @@ import (
 )
 
 type DriverRepository interface {
-	Create(ctx context.Context, driver *pb.Driver) error
+	Create(ctx context.Context, driver *pb.Driver) (*pb.Driver, error)
 	Remove(ctx context.Context, driverId string) error
-	GetIDByPackageSlug(ctx context.Context, packageSlug string) ([]string, error)
+	GetIDsByPackageSlug(ctx context.Context, packageSlug string) ([]string, error)
 }
