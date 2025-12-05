@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/ride4Low/contracts/events"
 	pb "github.com/ride4Low/contracts/proto/driver"
 	"github.com/ride4Low/driver-service/internal/config"
 	grpcServer "github.com/ride4Low/driver-service/internal/interface/grpc"
@@ -27,7 +28,13 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to create container: %v", err)
 	}
-	// defer container.Close(ctx)
+	defer container.Close()
+
+	// Start RabbitMQ consumer
+	if err := container.Consumer.Consume(ctx, events.FindAvailableDriversQueue); err != nil {
+		log.Fatalf("Failed to start consumer: %v", err)
+	}
+	log.Println("RabbitMQ consumer started")
 
 	// Create and start gRPC server
 	server := grpcServer.NewServer(grpcAddr)

@@ -14,14 +14,12 @@ import (
 )
 
 type EventHandler struct {
-	consumer  *rabbitmq.Consumer
 	driverSvc service.DriverService
 	publisher *rabbitmq.Publisher
 }
 
-func NewEventHandler(consumer *rabbitmq.Consumer, driverSvc service.DriverService, publisher *rabbitmq.Publisher) *EventHandler {
+func NewEventHandler(driverSvc service.DriverService, publisher *rabbitmq.Publisher) *EventHandler {
 	return &EventHandler{
-		consumer:  consumer,
 		driverSvc: driverSvc,
 		publisher: publisher,
 	}
