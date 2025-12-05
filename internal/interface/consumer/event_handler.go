@@ -37,7 +37,7 @@ func (h *EventHandler) Handle(ctx context.Context, msg amqp.Delivery) error {
 	}
 
 	switch msg.RoutingKey {
-	case events.TripEventCreated:
+	case events.TripEventCreated, events.TripEventDriverNotInterested:
 		return h.handleFindAndNotifyDrivers(ctx, message.Data)
 	default:
 		return fmt.Errorf("unknown routing key: %s", msg.RoutingKey)
