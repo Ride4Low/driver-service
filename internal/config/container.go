@@ -2,8 +2,10 @@ package config
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/ride4Low/contracts/env"
+	"github.com/ride4Low/contracts/pkg/otel"
 	"github.com/ride4Low/contracts/pkg/rabbitmq"
 	"github.com/ride4Low/driver-service/internal/application/service"
 	"github.com/ride4Low/driver-service/internal/infrastructure/ephemeral/inmem"
@@ -21,9 +23,21 @@ type Container struct {
 
 	// messaging
 	Consumer *rabbitmq.Consumer
+
+	// otel
+	otelProvider *otel.Provider
 }
 
 func NewContainer(ctx context.Context) (*Container, error) {
+	// Initialize OpenTelemetry
+	otelCfg := otel.DefaultConfig("driver-service")
+	otelCfg.JaegerEndpoint = env.GetString("JAEGER_ENDPOINT", "jaeger:4317")
+
+	otelProvider, err := otel.Setup(ctx, otelCfg)
+	if err != nil {
+		return nil, err
+	}
+
 	// Initialize repositories
 	driverRepo := inmem.NewDriverRepository()
 
@@ -48,9 +62,26 @@ func NewContainer(ctx context.Context) (*Container, error) {
 	return &Container{
 		DriverHandler: driverHandler,
 		Consumer:      consumer,
+		otelProvider:  otelProvider,
 	}, nil
 }
 
 func (c *Container) Close() error {
-	return c.rmq.Close()
+	var errs []error
+	if c.otelProvider != nil {
+		if err := c.otelProvider.Shutdown(context.Background()); err != nil {
+			errs = append(errs, err)
+		}
+	}
+	if c.rmq != nil {
+		if err := c.rmq.Close(); err != nil {
+			errs = append(errs, err)
+		}
+	}
+
+	if len(errs) > 0 {
+		return fmt.Errorf("shutdown errors: %v", errs)
+	}
+
+	return nil
 }

@@ -6,6 +6,7 @@ import (
 	"net"
 
 	"github.com/ride4Low/contracts/env"
+	"github.com/ride4Low/contracts/pkg/otel"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -19,7 +20,7 @@ type Server struct {
 // NewServer creates a new gRPC server
 func NewServer(port int) *Server {
 	return &Server{
-		server: grpc.NewServer(),
+		server: grpc.NewServer(otel.ServerOptions()...),
 		port:   port,
 	}
 }
